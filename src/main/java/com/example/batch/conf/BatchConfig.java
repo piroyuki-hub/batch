@@ -4,6 +4,7 @@ import com.example.batch.listen.JobCompletionNotificationListener;
 import com.example.batch.model.Echo;
 import com.example.batch.task.EchoItemProcessor;
 import org.springframework.batch.core.Job;
+import org.springframework.batch.core.JobExecution;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.job.builder.JobBuilder;
 import org.springframework.batch.core.launch.support.RunIdIncrementer;
@@ -57,6 +58,12 @@ public class BatchConfig {
                 .processor(processor)
                 .writer(writer)
                 .build();
+    }
+
+    @Bean
+    public Object parameters(JobExecution jobExecution) {
+        var batchID = jobExecution.getJobParameters().getString("batch_id");
+        return null;
     }
 
     @Bean
