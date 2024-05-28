@@ -6,6 +6,7 @@ import com.example.batch.task.EchoItemProcessor;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.job.builder.JobBuilder;
+import org.springframework.batch.core.launch.support.RunIdIncrementer;
 import org.springframework.batch.core.repository.JobRepository;
 import org.springframework.batch.core.step.builder.StepBuilder;
 import org.springframework.batch.item.database.JdbcBatchItemWriter;
@@ -61,6 +62,7 @@ public class BatchConfig {
     @Bean
     public Job callAndResponseJob(JobRepository jobRepository, Step step1, JobCompletionNotificationListener listener) {
         return new JobBuilder("Call&ResponseJob", jobRepository)
+                .incrementer(new RunIdIncrementer())  // NOTE: 同じ Job を Param 気にせず、何度でも叩けるよう設定
                 .listener(listener)
                 .start(step1)
                 .build();
